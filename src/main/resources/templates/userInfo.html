@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User</title>
+</head>
+<body>
+<h1>User Info</h1>
+<ul>
+  <li th:each="user : ${user}">
+    User name : " <span th:text="${user.getUserName()}"></span> " <br>
+    User Posting Count :  "<span th:text="${user.getPostings().size()}"></span> " <br>
+    User Comment Count : " <span th:text="${user.getComments().size()}"></span> " <br>"
+  </li>
+</ul>
+
+</body>
+</html>

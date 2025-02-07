@@ -28,7 +28,6 @@ public class UserService {
     }
 
     public void update(UserDto userDto){
-
         User user;
         if(userRepository.findByName(userDto.getUserName()).isPresent())
             user = userRepository.findByName(userDto.getUserName()).get();
@@ -48,6 +47,11 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public User findUser(UserDto userDto){
+        if(userRepository.findByName(userDto.getUserName()).isEmpty()) return null;
+        return userRepository.findByName(userDto.getUserName()).get();
     }
 
     public List<Posting> findUserPosting(UserDto userDto){
