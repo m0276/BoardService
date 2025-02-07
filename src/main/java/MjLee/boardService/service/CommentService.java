@@ -17,20 +17,20 @@ public class CommentService {
 
     CommentRepository commentRepository;
     UserService userService;
-    PostingService postingService;
+    //PostingService postingService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserService userService, PostingService postingService) {
+    public CommentService(CommentRepository commentRepository, UserService userService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
-        this.postingService = postingService;
+        //this.postingService = postingService;
     }
 
     public void save(CommentDto commentDto){
         Comment comment = new Comment();
         comment.setText(commentDto.getText());
         comment.setUser(userService.findByName(commentDto.getUserName()));
-        comment.setPosting(postingService.findByPostingCount(commentDto.getPostingCount()));
+        comment.setPosting(userService.findByPostingCount(commentDto.getUserName(),commentDto.getPostingCount()));
         commentRepository.save(comment);
     }
 
