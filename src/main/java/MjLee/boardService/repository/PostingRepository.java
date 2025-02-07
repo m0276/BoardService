@@ -12,4 +12,5 @@ public interface PostingRepository extends JpaRepository<Posting,Long> {
     List<Posting> findAll();
     Optional<Posting> findByCount(Long postingCount);
     void deleteByCount(Long postingCount);
+    void deleteByUserName(String userName);
 }

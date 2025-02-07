@@ -57,7 +57,11 @@ public class PostingService {
         }
     }
 
-    public List<Posting> readAllPosting(PostingDto postingDto){
+    public void deleteUser(String userName){
+        postingRepository.findAll().removeIf(posting -> posting.getUser().getName().equals(userName));
+    }
+
+    public List<Posting> readAllPosting(){
         if(!postingRepository.findAll().isEmpty()){
            return postingRepository.findAll();
         }

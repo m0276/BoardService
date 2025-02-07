@@ -1,6 +1,7 @@
 package MjLee.boardService.service;
 
 import MjLee.boardService.dto.CommentDto;
+import MjLee.boardService.dto.UserDto;
 import MjLee.boardService.entity.Comment;
 import MjLee.boardService.repository.CommentRepository;
 import MjLee.boardService.repository.PostingRepository;
@@ -65,6 +66,14 @@ public class CommentService {
         if(comment == null) throw new RuntimeException();
 
         commentRepository.delete(comment);
+    }
+
+    public void deleteUser(String userName){
+        commentRepository.deleteByUserName(userName);
+    }
+
+    public void deletePosting(Long postingCount){
+        commentRepository.deleteByPostingCount(postingCount);
     }
 
     public List<Comment> findCommentByUser(CommentDto commentDto){

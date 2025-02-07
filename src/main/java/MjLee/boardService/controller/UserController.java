@@ -1,6 +1,8 @@
 package MjLee.boardService.controller;
 
 import MjLee.boardService.dto.UserDto;
+import MjLee.boardService.service.CommentService;
+import MjLee.boardService.service.PostingService;
 import MjLee.boardService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/user")
 public class UserController {
     UserService userService;
-    // user delete시 관련 comment,posting 삭제 필요
+    PostingService postingService;
+    CommentService commentService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostingService postingService, CommentService commentService) {
         this.userService = userService;
+        this.postingService = postingService;
+        this.commentService = commentService;
     }
 
     @GetMapping("{userName}")
@@ -54,7 +60,13 @@ public class UserController {
         userDto.setUserName(userName);
         userDto.setPassword(userPassWord);
 
+        commentService.deleteUser(userName);
+        postingService.deleteUser(userName);
+
+
         if(userService.delete(userDto)) return ResponseEntity.status(HttpStatus.OK).build();
+
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 

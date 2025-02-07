@@ -12,4 +12,8 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByUserName(String userName);
     List<Comment> findByPostingCount(Long count);
+
+    void deleteByUserName(String userName);
+
+    void deleteByPostingCount(Long count);
 }

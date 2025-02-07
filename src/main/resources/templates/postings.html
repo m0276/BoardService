@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User</title>
+</head>
+<body>
+<h1>Postings</h1>
+<ul>
+  <li th:each="posting : ${postingList}">
+    " <span th:text="${posting.getCount()}"></span> "  : " <span th:text="${posting.getTitle()}"></span> " <br>
+
+  </li>
+</ul>
+
+</body>
+</html>
