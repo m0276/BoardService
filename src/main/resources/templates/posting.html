@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Posting</title>
+</head>
+<body>
+<h1>Posting</h1>
+<ul>
+    <li th:each="posting : ${posting}">
+        " <span th:text="${posting.getTitle()}"></span> " <br>
+        " <span th:text="${posting.getContent()}"></span> " <br>
+        " <span th:text="${posting.getComments()}"></span> "<br>
+
+    </li>
+</ul>
+
+</body>
+</html>

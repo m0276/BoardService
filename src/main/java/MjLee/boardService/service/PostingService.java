@@ -15,22 +15,21 @@ import java.util.List;
 public class PostingService {
     PostingRepository postingRepository;
     UserService userService;
-    CommentService commentService;
 
     @Autowired
-    public PostingService(PostingRepository postingRepository, UserService userService, CommentService commentservice) {
+    public PostingService(PostingRepository postingRepository, UserService userService) {
         this.postingRepository = postingRepository;
         this.userService = userService;
-        this.commentService = commentservice;
     }
 
     public void save(PostingDto postingDto){
         Posting posting = new Posting();
-        posting.setTitle(posting.getTitle());
-        posting.setContent(posting.getContent());
+        posting.setTitle(postingDto.getTitle());
+        posting.setContent(postingDto.getContent());
         posting.setCount(postingDto.getPostingCount());
-        posting.setUser(userService.findByName(postingDto.getUserName()));
-
+        posting.setPostingUser(userService.findByName(postingDto.getUserName()));
+//        userService.findByName(postingDto.getUserName()).getPostings().add(posting);
+//        userService.saveUser(userService.findByName(postingDto.getUserName()));
         postingRepository.save(posting);
     }
 
@@ -58,7 +57,7 @@ public class PostingService {
     }
 
     public void deleteUser(String userName){
-        postingRepository.findAll().removeIf(posting -> posting.getUser().getName().equals(userName));
+        postingRepository.findAll().removeIf(posting -> posting.getPostingUser().getName().equals(userName));
     }
 
     public List<Posting> readAllPosting(){
@@ -69,10 +68,14 @@ public class PostingService {
         return null;
     }
 
-    public List<Comment> readPostingComment(PostingDto postingDto){
-        if(!commentService.findCommentByPosting(postingDto.getPostingCount()).isEmpty())
-            return commentService.findCommentByPosting(postingDto.getPostingCount());
+    public Posting readPosting(PostingDto postingDto){
+        if(postingRepository.findByCount(postingDto.getPostingCount()).isPresent()) return postingRepository.findByCount(postingDto.getPostingCount()).get();
         return null;
+    }
+
+    public List<Comment> readPostingComment(PostingDto postingDto){
+        if(postingRepository.findByCount(postingDto.getPostingCount()).isPresent()) return postingRepository.findByCount(postingDto.getPostingCount()).get().getComments();
+        else throw new RuntimeException();
     }
 
     Posting findByPostingCount(Long count){
@@ -82,9 +85,13 @@ public class PostingService {
 
     public boolean findLoginByPostingCount(PostingDto postingDto){
         if(postingRepository.findByCount(postingDto.getPostingCount()).isPresent()){
-            return postingRepository.findByCount(postingDto.getPostingCount()).get().getUser().isLogin();
+            return postingRepository.findByCount(postingDto.getPostingCount()).get().getPostingUser().isLogin();
         }
 
         throw new RuntimeException();
+    }
+
+    void savePosting(Posting posting){
+        postingRepository.save(posting);
     }
 }

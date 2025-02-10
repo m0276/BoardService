@@ -64,10 +64,14 @@ public class CommentController {
                 try{
                     commentService.delete(commentDto);
                 } catch (RuntimeException e){
+                    System.out.println("delete!");
+                    e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
             }
         }catch (RuntimeException e){
+            System.out.println("login!");
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

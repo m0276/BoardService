@@ -22,11 +22,11 @@ public class User {
     @Column
     boolean login = false;
 
-    @OneToMany @JoinColumn(name = "id_posting")
+    @OneToMany(mappedBy = "postingUser",fetch = FetchType.EAGER)
     List<Posting> postings;
 
-    @JoinColumn(name = "id_comment")
-    @OneToMany
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     List<Comment> comments;
 
     public String getName() {
@@ -67,5 +67,12 @@ public class User {
 
     public void setLogin(boolean login) {
         this.login = login;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

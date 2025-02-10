@@ -69,14 +69,21 @@ public class UserService {
     }
 
     Posting findByPostingCount(String name, Long postCount){
-        if(userRepository.findByName(name).isEmpty()) return null;
+        if(userRepository.findByName(name).isEmpty()) {
+            return null;
+        }
         List<Posting> list = (userRepository.findByName(name).get().getPostings());
+        System.out.println(list);
         for(Posting posting : list){
-            if(posting.getCount().equals(postCount)){
+            if(postCount == posting.getCount()){
                 return posting;
             }
         }
 
         return null;
+    }
+
+    void saveUser(User user){
+        userRepository.save(user);
     }
 }

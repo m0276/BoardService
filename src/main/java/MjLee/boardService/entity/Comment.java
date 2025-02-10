@@ -57,4 +57,14 @@ public class Comment {
     public void setCount(int count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "count=" + count +
+                ", text='" + text + '\'' +
+                ", posting=" + posting +
+                ", user=" + user +
+                '}';
+    }
 }

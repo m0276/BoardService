@@ -2,9 +2,11 @@ package MjLee.boardService.service;
 
 import MjLee.boardService.dto.UserDto;
 import MjLee.boardService.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class LoginService {
 

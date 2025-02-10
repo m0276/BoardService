@@ -24,10 +24,9 @@ public class Posting {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    User postingUser;
 
-    @OneToMany
-    @JoinColumn(name = "id_comment")
+    @OneToMany(mappedBy = "posting",fetch = FetchType.EAGER)
     List<Comment> comments;
 
     public String getTitle() {
@@ -54,12 +53,12 @@ public class Posting {
         this.count = postingCount;
     }
 
-    public User getUser() {
-        return user;
+    public User getPostingUser() {
+        return postingUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPostingUser(User user) {
+        this.postingUser = user;
     }
 
     public List<Comment> getComments() {
@@ -68,5 +67,13 @@ public class Posting {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return "Posting{" +
+                "title='" + title + '\'' +
+                ", postingUser=" + postingUser +
+                '}';
     }
 }

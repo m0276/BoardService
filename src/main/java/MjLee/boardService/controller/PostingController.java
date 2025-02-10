@@ -29,9 +29,6 @@ public class PostingController {
         this.commentService = commentService;
     }
 
-    // 글이 올라온 순서를 지정할 Long 변수 필요
-    Long count = 1L;
-
     @GetMapping
     public ModelAndView postings(Model model){
         model.addAttribute(postingService.readAllPosting());
@@ -41,11 +38,31 @@ public class PostingController {
         return modelAndView;
     }
 
+    @GetMapping("{postingCount}")
+    public ModelAndView titleAndContent(@PathVariable Long postingCount,Model model){
+        PostingDto postingDto = new PostingDto();
+        postingDto.setPostingCount(postingCount);
+        model.addAttribute(postingService.readPosting(postingDto));
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("posting");
+
+        return modelAndView;
+    }
+
     @PostMapping
     public ResponseEntity<Void> createPosting(@RequestBody PostingDto postingDto){
-        postingDto.setPostingCount(count);
+        Long count;
+        if(postingService.readAllPosting() == null){
+            count = 0L;
+        }
+        else{
+            count = (long) (postingService.readAllPosting().size());
+        }
+
+        postingDto.setPostingCount(count+1);
+
         postingService.save(postingDto);
-        count++;
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
