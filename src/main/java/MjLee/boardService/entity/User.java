@@ -19,6 +19,9 @@ public class User {
     @Column
     String password;
 
+    @Column
+    boolean login = false;
+
     @OneToMany @JoinColumn(name = "id_posting")
     List<Posting> postings;
 
@@ -58,5 +61,11 @@ public class User {
         this.comments = comments;
     }
 
+    public boolean isLogin() {
+        return login;
+    }
 
+    public void setLogin(boolean login) {
+        this.login = login;
+    }
 }

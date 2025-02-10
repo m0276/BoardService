@@ -4,6 +4,7 @@ public class CommentDto {
     String text;
     String userName;
     Long postingCount;
+    int commentIndex;
 
     public String getText() {
         return text;
@@ -27,5 +28,13 @@ public class CommentDto {
 
     public void setPostingCount(Long postingCount) {
         this.postingCount = postingCount;
+    }
+
+    public int getCommentIndex() {
+        return commentIndex;
+    }
+
+    public void setCommentIndex(int commentIndex) {
+        this.commentIndex = commentIndex;
     }
 }

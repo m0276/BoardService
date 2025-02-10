@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/board/comment")
 public class CommentController {
 
     CommentService commentService;
@@ -38,23 +38,36 @@ public class CommentController {
     @PutMapping
     public ResponseEntity<Void> updateComment(@RequestBody CommentDto commentDto){
         try{
-            commentService.update(commentDto);
-        } catch (RuntimeException e){
+            if(commentService.checkLoginOfUser(commentDto)){
+                try{
+                    commentService.update(commentDto);
+                } catch (RuntimeException e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            }
+        }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{postingCount}/{userName}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long postingCount, @PathVariable String userName){
+    @DeleteMapping("/{postingCount}/{userName}/{commentIndex}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postingCount, @PathVariable String userName, @PathVariable int commentIndex){
         CommentDto commentDto = new CommentDto();
         commentDto.setPostingCount(postingCount);
         commentDto.setUserName(userName);
+        commentDto.setCommentIndex(commentIndex);
 
         try{
-            commentService.delete(commentDto);
-        } catch (RuntimeException e){
+            if(commentService.checkLoginOfUser(commentDto)){
+                try{
+                    commentService.delete(commentDto);
+                } catch (RuntimeException e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            }
+        }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

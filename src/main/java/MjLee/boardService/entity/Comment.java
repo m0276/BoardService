@@ -13,6 +13,9 @@ public class Comment {
     Long id;
 
     @Column
+    int count;
+
+    @Column
     String text;
 
     @ManyToOne
@@ -45,5 +48,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

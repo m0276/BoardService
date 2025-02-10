@@ -8,6 +8,7 @@
 <h1>Posting Comments</h1>
 <ul>
   <li th:each="comment : ${commentList}">
+    " <span th:text="${comment.getCount()}  "></span> "
     " <span th:text="${comment.getUser()}"></span> "  : " <span th:text="${comment.getText()}"></span> " <br>
 
   </li>

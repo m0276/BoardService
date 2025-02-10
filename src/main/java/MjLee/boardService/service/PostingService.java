@@ -79,4 +79,12 @@ public class PostingService {
         if(postingRepository.findByCount(count).isPresent()) return postingRepository.findByCount(count).get();
         else throw new RuntimeException();
     }
+
+    public boolean findLoginByPostingCount(PostingDto postingDto){
+        if(postingRepository.findByCount(postingDto.getPostingCount()).isPresent()){
+            return postingRepository.findByCount(postingDto.getPostingCount()).get().getUser().isLogin();
+        }
+
+        throw new RuntimeException();
+    }
 }

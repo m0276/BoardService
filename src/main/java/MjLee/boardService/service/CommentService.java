@@ -32,6 +32,7 @@ public class CommentService {
         comment.setText(commentDto.getText());
         comment.setUser(userService.findByName(commentDto.getUserName()));
         comment.setPosting(userService.findByPostingCount(commentDto.getUserName(),commentDto.getPostingCount()));
+        comment.setCount(userService.findByPostingCount(commentDto.getUserName(),commentDto.getPostingCount()).getComments().size()+1);
         commentRepository.save(comment);
     }
 
@@ -82,5 +83,18 @@ public class CommentService {
 
     public List<Comment> findCommentByPosting(Long postingCount){
         return commentRepository.findByPostingCount(postingCount);
+    }
+
+    public boolean checkLoginOfUser(CommentDto commentDto){
+        if(commentRepository.findByPostingCount(commentDto.getPostingCount()).isEmpty()){
+            throw new RuntimeException();
+        }
+
+        if(commentRepository.findByPostingCount(commentDto.getPostingCount()).get(commentDto.getCommentIndex())
+                .getUser().getName().equals(commentDto.getUserName()))
+            return commentRepository.findByPostingCount(commentDto.getPostingCount()).get(commentDto.getCommentIndex())
+                    .getUser().isLogin();
+
+        throw new RuntimeException();
     }
 }

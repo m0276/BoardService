@@ -40,10 +40,8 @@ public class UserService {
 
     public boolean delete(UserDto userDto){
         if (userRepository.findByName(userDto.getUserName()).isPresent()) {
-            if (userRepository.findByName(userDto.getUserName()).get().getPassword().equals(userDto.getPassword())) {
-                userRepository.deleteByName(userDto.getUserName());
-                return true;
-            }
+            userRepository.deleteByName(userDto.getUserName());
+            return true;
         }
 
         return false;

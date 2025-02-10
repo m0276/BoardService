@@ -3,6 +3,7 @@ package MjLee.boardService.controller;
 import MjLee.boardService.dto.PostingDto;
 import MjLee.boardService.entity.Posting;
 import MjLee.boardService.service.CommentService;
+import MjLee.boardService.service.LoginService;
 import MjLee.boardService.service.PostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/posting")
+@RequestMapping("/board/posting")
 public class PostingController {
+
     PostingService postingService;
     CommentService commentService;
+
 
     @Autowired
     public PostingController(PostingService postingService, CommentService commentService) {
@@ -49,7 +52,13 @@ public class PostingController {
     @PutMapping
     public ResponseEntity<Void> updatePosting(@RequestBody PostingDto postingDto){
         try{
-            postingService.update(postingDto);
+            if(postingService.findLoginByPostingCount(postingDto)){
+                try{
+                    postingService.update(postingDto);
+                } catch (RuntimeException e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            }
         } catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -61,10 +70,16 @@ public class PostingController {
     public ResponseEntity<Void> deletePosting(@PathVariable Long postingCount){
         PostingDto postingDto = new PostingDto();
         postingDto.setPostingCount(postingCount);
-        commentService.deletePosting(postingCount);
-
         try{
-            postingService.delete(postingDto);
+            if(postingService.findLoginByPostingCount(postingDto)){
+                commentService.deletePosting(postingCount);
+
+                try{
+                    postingService.delete(postingDto);
+                } catch (RuntimeException e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            }
         } catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
