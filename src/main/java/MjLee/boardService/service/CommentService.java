@@ -38,12 +38,6 @@ public class CommentService {
         else count = postingService.findByPostingCount(commentDto.getPostingCount()).getComments().size();
         comment.setCount(count+1);
 
-//        postingService.findByPostingCount(commentDto.getPostingCount()).getComments().add(comment);
-//        postingService.savePosting(postingService.findByPostingCount(commentDto.getPostingCount()));
-//
-//        userService.findByName(commentDto.getUserName()).getComments().add(comment);
-//        userService.saveUser(userService.findByName(commentDto.getUserName()));
-
         commentRepository.save(comment);
     }
 
@@ -98,7 +92,6 @@ public class CommentService {
 
     public boolean checkLoginOfUser(CommentDto commentDto){
         if(commentRepository.findByPostingCount(commentDto.getPostingCount()).isEmpty()){
-            //System.out.println("none");
             throw new RuntimeException();
         }
 
@@ -107,7 +100,6 @@ public class CommentService {
             return commentRepository.findByPostingCount(commentDto.getPostingCount()).get(commentDto.getCommentIndex()-1)
                     .getUser().isLogin();
 
-        //System.out.println("end");
         throw new RuntimeException();
     }
 }

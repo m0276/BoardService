@@ -83,7 +83,7 @@ public class PostingService {
         else throw new RuntimeException();
     }
 
-    public boolean findLoginByPostingCount(PostingDto postingDto){
+    public boolean checkLoginByPostingCount(PostingDto postingDto){
         if(postingRepository.findByCount(postingDto.getPostingCount()).isPresent()){
             return postingRepository.findByCount(postingDto.getPostingCount()).get().getPostingUser().isLogin();
         }
@@ -91,7 +91,10 @@ public class PostingService {
         throw new RuntimeException();
     }
 
-    void savePosting(Posting posting){
-        postingRepository.save(posting);
+    public boolean checkLoginByUserName(PostingDto postingDto){
+        if(postingRepository.findByPostingUserName(postingDto.getUserName()).isPresent())
+            return postingRepository.findByPostingUserName(postingDto.getUserName()).get().getPostingUser().isLogin();
+
+        throw new RuntimeException();
     }
 }

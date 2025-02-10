@@ -31,7 +31,17 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Void> creatComment(@RequestBody CommentDto commentDto){
-        commentService.save(commentDto);
+        try{
+            if(commentService.checkLoginOfUser(commentDto)){
+                commentService.save(commentDto);
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -44,6 +54,9 @@ public class CommentController {
                 } catch (RuntimeException e){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -64,14 +77,13 @@ public class CommentController {
                 try{
                     commentService.delete(commentDto);
                 } catch (RuntimeException e){
-                    System.out.println("delete!");
-                    e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }
             }
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         }catch (RuntimeException e){
-            System.out.println("login!");
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
